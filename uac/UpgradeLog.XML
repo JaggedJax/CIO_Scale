@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="uac-example">
+</Property><Property Name="Solution File" Value="C:\Users\williamw.CIOHQ\Documents\Programming\uac-example\uac-example.sln">
+</Property><Property Name="User Options File" Value="C:\Users\williamw.CIOHQ\Documents\Programming\uac-example\uac-example.suo">
+</Property><Property Name="Date" Value="Thursday, November 10, 2011">
+</Property><Property Name="Time" Value="18:34 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="uac-example.sln" Description="File successfully backed up as C:\Users\williamw.CIOHQ\Documents\Programming\uac-example\uac-example.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="uac-example.suo" Description="File successfully backed up as C:\Users\williamw.CIOHQ\Documents\Programming\uac-example\uac-example.suo.old">
+</Event><Event ErrorLevel="0" Project="uac-example" Source="uac-example\uac-example.vcproj" Description="Converting project file 'C:\Users\williamw.CIOHQ\Documents\Programming\uac-example\uac-example\uac-example.vcproj'.">
+</Event><Event ErrorLevel="1" Project="uac-example" Source="uac-example\uac-example.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="uac-example" Source="uac-example\uac-example.vcproj" Description="Done converting to new project file 'C:\Users\williamw.CIOHQ\Documents\Programming\uac-example\uac-example\uac-example.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="uac-example" Source="uac-example\uac-example.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="uac-example.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="uac-example.sln" Description="Converted">
+</Event></UpgradeLog>
