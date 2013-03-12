@@ -5,14 +5,13 @@ Java applet written by: William S. Wynn (CIO Technologies)
 
 License to come. Contact before commercial use.
 
-libusb-win32 wrapper (Java): http://libusbjava.sourceforge.net
-
-libusb-win32: http://sourceforge.net/apps/trac/libusb-win32
+* libusb-win32 wrapper (Java): http://libusbjava.sourceforge.net
+* libusb-win32: http://sourceforge.net/apps/trac/libusb-win32
 
 ScaleAppletSigned.jar takes two parameters at runtime:
 
-	* url - Base url of page. eg: https://cioremotedemo.ciotech.com
-	* install - Ignored unless this param's value is also 'install'. If so, this forces the installer to run even if a valid scale is detected.
+* url - Base url of page. eg: https://cioremotedemo.ciotech.com
+* install - Ignored unless this param's value is also 'install'. If so, this forces the installer to run even if a valid scale is detected.
 
 The /src folder contains ScaleApplet.java which is the only custom Java code you will need for the integration.
 	
@@ -36,13 +35,11 @@ folder /drivers/usb contents:
 	- The downside of this is you could have to install every time the computer is restarted. The upside is it can be automated more, I think.
 * uac-launch.exe
 	- A program I modified to launch any program and ask for admin privalages.
-	- Use like:
-
-    uac-launch.exe <File to launch> <Parameters>
-
-		- Where Parameters passed are the parameters for the file to launch.
+	- Parameters passed are the parameters for the file to launch.
 	- The program is compiled with Microsoft Visual C++ 2010 Express
 	- Project source included at /uac
+
+>uac-launch.exe \<File to launch\> \<Parameters\>
 
 Folders /lib32 and /lib64 contain the raw files that libusb-32.exe and libusb-64.exe actually contain.
 The corresponding .iip files are Clickteam Install Creator Pro files used to create/modify the exe installers. They use the /lib32 and /lib64 folders to build the installers.
