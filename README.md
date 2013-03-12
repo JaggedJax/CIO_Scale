@@ -26,37 +26,40 @@ Those two files are the custom driver installers.
 
 folder /drivers/usb contents:
 
-	* libusb-32.exe & libusb-64.exe installers
-	* inf-wizard.exe
-		- GUI installer for scale special drivers
-		- This program is included in and launched by the installers listed above
-	* install-filter-win32.exe & install-filter-win64.exe
-		- These are the filter drivers that can be used to talk to a usb scale w/o installing the special drivers. I haven't played with this much.
-		- Instructions for use are at: http://sourceforge.net/apps/trac/libusb-win32/wiki#Installation
-		- The downside of this is you could have to install every time the computer is restarted. The upside is it can be automated more, I think.
-	* uac-launch.exe
-		- A program I modified to launch any program and ask for admin privalages.
-		- Use like: uac-launch.exe <File to launch> <Parameters>
-			- Where Parameters passed are the parameters for the file to launch.
-		- The program is compiled with Microsoft Visual C++ 2010 Express
-		- Project source included at /uac
+* libusb-32.exe & libusb-64.exe installers
+* inf-wizard.exe
+	- GUI installer for scale special drivers
+	- This program is included in and launched by the installers listed above
+* install-filter-win32.exe & install-filter-win64.exe
+	- These are the filter drivers that can be used to talk to a usb scale w/o installing the special drivers. I haven't played with this much.
+	- Instructions for use are at: http://sourceforge.net/apps/trac/libusb-win32/wiki#Installation
+	- The downside of this is you could have to install every time the computer is restarted. The upside is it can be automated more, I think.
+* uac-launch.exe
+	- A program I modified to launch any program and ask for admin privalages.
+	- Use like:
+    uac-launch.exe <File to launch> <Parameters>
+		- Where Parameters passed are the parameters for the file to launch.
+	- The program is compiled with Microsoft Visual C++ 2010 Express
+	- Project source included at /uac
 
 Folders /lib32 and /lib64 contain the raw files that libusb-32.exe and libusb-64.exe actually contain.
 The corresponding .iip files are Clickteam Install Creator Pro files used to create/modify the exe installers. They use the /lib32 and /lib64 folders to build the installers.
 
 ## Create jar from scratch
-jar cvf jarFile.jar inputfile1.class inputfile2.class folder1 folder2
+    jar cvf jarFile.jar inputfile1.class inputfile2.class folder1 folder2
 
 ## Signing
 You must use a signed jar file. An unsigned file will not load.
 
 * In command prompt go to folder containing unsigned jar
 * Use your own jdk directory in the commands below of course.
+
 * Create Store: (If an error about this alias is thrown, make any new -alias here (Doesn't matter what) and also change it in the next command)
-> keytool -genkey -alias signJar -keystore compstore -keypass cio4ever -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
+    keytool -genkey -alias signJar -keystore compstore -keypass cio4ever -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
 
 * Sign Jar:
-> jarsigner -keystore compstore -storepass cio4ever -keypass cio4ever -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
+
+    jarsigner -keystore compstore -storepass cio4ever -keypass cio4ever -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
 
 ## Using the Applet
 Example code to include in page:
