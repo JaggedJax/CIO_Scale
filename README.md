@@ -55,6 +55,7 @@ You must use a signed jar file. An unsigned file will not load.
 * Use your own jdk directory in the commands below of course.
 
 * Create Store: (If an error about this alias is thrown, make any new -alias here (Doesn't matter what) and also change it in the next command)
+
     keytool -genkey -alias signJar -keystore compstore -keypass cio4ever -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
 
 * Sign Jar:
