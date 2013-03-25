@@ -10,12 +10,14 @@
 			return $protocol . "://" . $_SERVER['HTTP_HOST'];
 		}
 	?>
-	
-<applet archive="ScaleAppletSigned.jar" code="ScaleApplet.class" name="scaleApplet" id="scaleApplet" width="200" height="40" >
-	<!-- <param name="codebase" value="ch.ntb.usb-0.5.9.jar"> -->
+
+<object type="application/x-java-applet" name="scaleApplet" id="scaleApplet" width="200" height="40">
+	<param name="Codebase" value="java/">
+	<param name="archive" value="ScaleAppletSigned.jar">
+	<param name="code" value="ScaleApplet.class">
 	<param name="url" value="<?php echo base_url(); ?>">
 	<param name="install" value="install">
-</applet>
+</object>
 <br>
 <form id="testform" name="testform">
 	<input type="text" name="weight" id="weight" size="6" value="0" /><span id="unit"></span>
