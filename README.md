@@ -75,7 +75,7 @@ Example code to include in page:
         <param name="code" value="ScaleApplet.class">
         <param name="url" value="https://cioremotedemo.ciotech.com">
         <param name="install" value="">
-   </object>
+    </object>
     
     <!-- Call getWeight() from scale.js to pull weight from scale and put it in desired element ID  -->
     <input type="button" onclick="getWeight(); return false;" value="Get Weight">
