@@ -23,6 +23,8 @@ import org.apache.commons.io.FileUtils;
 public class ScaleApplet extends Applet{
 	private static final long serialVersionUID = 1L;
 //	private Label m_label = new Label("version 11.8.11"); // MM.DD.YY - Date of last update
+	private int interface_num = 0;
+	
 	private Label view = new Label();
 	private String unit[];
 	private double weight;
@@ -38,7 +40,8 @@ public class ScaleApplet extends Applet{
 	private Device dev;
 	private String url;
 	private String arch = "";
-	private boolean install;
+	private boolean try_install;
+	private boolean force_install;
 	private boolean connectionClosed = false;
 	private int connectionAttempts = 0;
 	private int maxConnectionAttempts = 10;
@@ -57,16 +60,19 @@ public class ScaleApplet extends Applet{
 		message = "Not connected to scale";
 		error = true;
 		reconnect = false;
+		try_install = true;
+		force_install = false;
 		// data read from the device
 		readData = new byte[7];
 		url = getParameter("url");
 		String temp = getParameter("install");
-		if (temp != null && temp.equals("install")){
-			install = true;
+		if (temp != null && (temp.equals("install") || temp.equals("force"))){
+			force_install = true;
 			System.out.println("Scale drivers install has been forced.");
 		}
-		else
-			install = false;
+		else if (temp != null && temp.equals("no")){
+			try_install = false;
+		}
 		
 	    setup(null);
 	    get_scale();
@@ -78,14 +84,15 @@ public class ScaleApplet extends Applet{
 			dev = USB.getDevice(vid, pid);
 			try{
 				if (dev.isOpen()){
-					dev.close();
+					dev.reset();
+					dev = USB.getDevice(vid, pid);
 				}
 			} catch (Exception ee){
-				System.out.println("Couldn't close device");
+				System.out.println("Couldn't reset device");
 			}
 			
-			dev.open(1, 0, -1);
-			dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, false);
+			dev.open(1, interface_num, -1);
+			dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, true);
 			System.out.println("Using interface: "+dev.getInterface());
 			error = false;
 		} catch (USBException e) {
@@ -205,11 +212,25 @@ public class ScaleApplet extends Applet{
 		try{
 			LibusbJava.usb_init();
 		}catch (UnsatisfiedLinkError e){
-			System.out.println(e.getMessage());
-			if (arch.equals("32"))
-				setup("64");
-			else
-				setup("32");
+			System.out.println("Path: "+System.getProperty("java.library.path"));
+			System.out.println("Library error: "+e.getMessage());
+			int pos_32 = e.getMessage().indexOf("32-bit");
+			int pos_64 = e.getMessage().indexOf("64-bit");
+			// If error message is what we expect
+			if (pos_32 > -1 && pos_64 > -1){
+				// "Can't load 32-bit .dll on 64-bit platform" error message 
+				if (pos_32 < pos_64)
+					setup("64");
+				else
+					setup("32");
+			}
+			// Otherwise try the other library
+			else{
+				if (arch.equals("32"))
+					setup("64");
+				else
+					setup("32");
+			}
 			try{
 				LibusbJava.usb_init();
 			}catch (Exception e2){
@@ -283,7 +304,7 @@ public class ScaleApplet extends Applet{
 		File file1 = new File(sys32 + "LibusbJava.dll");
 		File fileUAC = new File(tempDir + UAC);
 		File fileInstall = new File(tempDir + Installer);
-		if (!file1.exists() || install){
+		if ((!file1.exists() && try_install) || force_install){
 			try {
 				System.out.println("Drivers Missing. Coping over files.");
 				FileUtils.copyURLToFile(new URL(url+"/drivers/usb/uac-launch.exe"), fileUAC);
@@ -299,17 +320,19 @@ public class ScaleApplet extends Applet{
 					workingDir = new File(".");
 				}
 			*/
-				Object[] options = {"Install Scale", "Cancel"};
-				String message = "CIO Remote will now install the required scale drivers.\nAdministrator privileges are required!\n\n"
-						+"If you are running XP, you must un-select the box that says:\n"
-						+"\"Protect my computer and data from unauthorized program activity\"\n\n"
-						+"The installer will launch when you close this window.\n\n"
-						+"When asked to save a file, save it in your home directory and then select \"Install Now\"";
-				int choice = JOptionPane.showOptionDialog(this, message, "CIO Remote - Installing Drivers", JOptionPane.YES_NO_OPTION,
-						JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-				if (choice != 0){
-					System.out.println("Install canceled");
-					return;
+				if (forceArch != null){
+					Object[] options = {"Install Scale", "Cancel"};
+					String message = "CIO Remote will now install the required scale drivers.\nAdministrator privileges are required!\n\n"
+							+"If you are running XP, you must un-select the box that says:\n"
+							+"\"Protect my computer and data from unauthorized program activity\"\n\n"
+							+"The installer will launch when you close this window.\n\n"
+							+"When asked to save a file, save it in your home directory and then select \"Install Now\"";
+					int choice = JOptionPane.showOptionDialog(this, message, "CIO Remote - Installing Drivers", JOptionPane.YES_NO_OPTION,
+							JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+					if (choice != 0){
+						System.out.println("Install canceled");
+						return;
+					}
 				}
 				
 				try {
@@ -338,6 +361,9 @@ public class ScaleApplet extends Applet{
 			} catch (Exception e) {
 				showMessage("Couldn't install drivers.\n\n"+e.getMessage(), "Error");
 			}
+		}
+		else if(!file1.exists() && !try_install){
+			System.out.println("Drivers missing, but install was skipped by request.");
 		}
 		else{
 			System.out.println("Drivers already installed");
@@ -457,7 +483,6 @@ public class ScaleApplet extends Applet{
 	
 	/**
 	 * Tell applet to read data from scale forever
-	 * This will block Javascript
 	 */
 	public void loopApplet(){
 		while (true){
