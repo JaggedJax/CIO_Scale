@@ -1,0 +1,543 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Applet-launcher: Subversion: trunkREADME-build.html &mdash; Java.net</title>
+    <link href="http://asset-1.java.net/stylesheets/print_packaged.css?20111104.8bf0245" media="print" rel="stylesheet" type="text/css" />
+    <script src="http://asset-0.java.net/javascripts/head_packaged.js?20111104.8bf0245" type="text/javascript"></script>
+        <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">
+        stLight.options({
+                publisher:'bcd30425-1749-43d6-a311-18a82f89771a'
+        });
+    </script>
+        <script type="text/javascript">
+//<![CDATA[
+var page={"token":"6ec67fb9ef0a22001104e6a7ccf2bb01ba10ce96"};
+//]]>
+</script>
+    <script type="text/javascript" charset="utf-8">
+      function debug(m){}
+    </script>
+    
+  <link href="http://asset-1.java.net/stylesheets/syntax/shCore.css?20111104.8bf0245" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://asset-0.java.net/stylesheets/syntax/shThemeDefault.css?20111104.8bf0245" media="screen" rel="stylesheet" type="text/css" />
+
+
+    <link href="http://asset-0.java.net/theme/stylesheets/java_net.css?20111104.8bf0245" media="screen" rel="stylesheet" type="text/css" />
+    <link href="http://asset-3.java.net/theme/stylesheets/layout.css?20111104.8bf0245" media="screen" rel="stylesheet" type="text/css" />
+    <!--[if IE]><style type="text/css" media="all">@import "/theme/stylesheets/ie.css";</style><![endif]-->
+    <!--[if lte IE 6]><style type="text/css" media="all">@import "/theme/stylesheets/ie6.css";</style><![endif]-->
+    <!--[if IE 7]><style type="text/css" media="all">@import "/theme/stylesheets/ie7.css";</style><![endif]-->
+    <!--[if IE 8]><style type="text/css" media="all">@import "/theme/stylesheets/ie8.css";</style><![endif]-->
+
+    <meta name="keywords" content="" />
+  </head>
+  <body class="front not-logged-in article-type-page one-sidebar">
+    <div id="container">
+      
+      <div id="skip-nav" class="element-invisible">
+        <!-- To adjust the display of the skip link see the Advanced theme settings
+        (General settings), and never use display:none! -->
+        <a href="#main-content">Skip to main content</a>
+      </div>
+      <div id="leaderboard">
+        <div id="block-block-31"  class="block">
+          <div class="block-inner">
+            <div class="content">
+                <a href="/people/new">Create Account</a>
+  <span class="separator"></span>
+  <a href="/people/login?original_uri=%2Fprojects%2Fapplet-launcher%2Fsources%2Fsvn%2Fcontent%2Ftrunk%2FREADME-build.html" rel="nofollow">Login</a>
+  <span class="separator"></span>
+  <a href="/projects/help/pages/SourceControl" target="_blank">Help</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="header" class="clearfix">
+        <div id="branding">
+          <div class="logo-site-name">
+            <strong>
+              <span id="logo">
+                <a href="http://www.java.net/" rel="home" class="active">
+                  <img alt="java.net - Go to Homepage" border="0" class="logo-link" src="http://asset-3.java.net/theme/images/logo.png?20111104.8bf0245" title="Java.net - Go to the Homepage" />
+                </a>
+              </span>
+            </strong>
+          </div>
+          <div id="site-slogan">The Source for Java Technology Collaboration</div>
+        </div>
+        <div id="search-box" class="hide-label">
+          <form action="http://www.java.net/search/node" method="post" id="search-theme-form">
+            <div id="search">
+              <input type="hidden" value="search_form" id="edit-search-form" name="form_id" />
+              <div style="margin-left: -10px;" class="checks">
+                <span><input type="checkbox" name="type[forum]" id="edit-forums" value="forum" /> Forums</span>
+                <span><input type="checkbox" name="type[blog]" id="edit-blogs" value="blog" /> Blogs</span>
+                <span><input type="checkbox" name="projects" id="edit-projects" value="project" /> Projects</span>
+                <span><input type="checkbox" name="people" id="edit-people" value="people" /> People</span>
+              </div>
+              <input type="text" class="form-text" id="edit-search-theme-form-1" value="Search All" size="15" onclick="this.value = ''" onblur="if (!this.value) this.value = ''" name="keys" />
+              <input type="submit" value="" name="op" title="Search" class="form-submit" alt="Search" />
+            </div>
+          </form>
+        </div>
+      </div>
+    <div id="primary" class="nav">
+      <div id="primary-inner">
+                <h2 class="element-invisible">Main Menu</h2>
+       <ul class="primary-links clearfix">
+          <li class=""><a href="http://www.java.net/" title="Return to the java.net homepage" class="active">Home</a></li>
+          <li class="active-trail"><a href="http://www.java.net/projects" title="View the projects hosted on java.net">Projects</a></li>
+          <li class=""><a href="http://www.java.net/forums" title="Participate in the java.net forums">Forums</a></li>
+          <li class=""><a href="/people" title="View all the people involved with java.net">People</a></li>
+          <li class=""><a href="http://www.java.net/jugs/java-user-groups" title="Get involved in your local Java User Group (JUG)">Java User Groups</a></li>
+          <li class=""><a href="http://www.java.net/community/jcp" title="Get involved with the Java Community Process!">JCP</a></li>
+                  </ul>
+       </div>
+    </div>
+    <div id="columns">
+      <div class="columns-inner clearfix">
+        <div id="content-column">
+          <div class="content-inner">
+           <div id="navig-breadcrumbs">
+              <a href="/">java.net</a><span>></span>
+  <a href="/projects">projects</a><span>&gt;</span><a href="/projects/applet-launcher">applet-launcher</a><span>&gt;</span><a href="/projects/applet-launcher/sources">source code</a><span>&gt;</span><a href="/projects/applet-launcher/sources/svn/show" class="current">Subversion</a>
+
+            </div>
+            <div id="block-quicktabs-2"  class="block">
+              <div class="block-inner">
+                <div class="content">
+                  <!-- BEGIN CONTENT AREA -->
+                  
+                  
+
+
+
+
+
+ 
+ 
+
+
+
+<div class="contentPadding">
+  <h2 class="pageTitle">Source code<span class="secondaryTitle"> file content</span></h2>
+
+  <!-- Revision Navigation -->
+      <!--Source code navigation - 2 column layout -->
+    <div class="scmNavBlock">
+      <div class="twoColumns">
+        <div class="column">
+          
+            <span class="alignText">Revision:</span>
+            <span class="alignText">
+              <a href="/projects/applet-launcher/sources/svn/revision/44">44</a>
+              
+            </span>
+          
+          <br/><br/>
+          <span class="alignText">Committed through web interface.</span>
+        </div>
+        <div class="column">
+          <div align="right">
+            <a href="/projects/applet-launcher/sources/svn/history">&raquo; Project Revision History</a>
+            <br/><br/>
+            <div id="repository-url-overlay">
+  <a href="#" class="contextMenuAnchor" id="scm-url_14730">&raquo; Checkout URL</a><div style="display:none" id="scm-url_14730_content">
+	
+      <span class="quiet">Access the source code using the following URL:</span>
+      <br />https://svn.java.net/svn/applet-launcher~svn
+      
+	
+    
+      <br /><br />
+      
+        <span class="quiet">
+          You must be <a href="/people/login">logged in</a>
+          to see SSH URLs.
+        </span>
+      
+    
+  </div>
+</div>
+
+          </div>
+        </div>
+      <div class="clear"></div>
+      </div>
+    </div>
+    <!--End source code navigation -->
+  
+
+  <!-- Title and back link -->
+  <h3 class="pathBreadcrumbs subSection scmTitle"><a href="/projects/applet-launcher/sources/svn/show" title="Repository Contents">svn</a><span> / </span><a href="/projects/applet-launcher/sources/svn/show/trunk" title="Go to trunk">trunk</a><span> / </span><a href="/projects/applet-launcher/sources/svn/content/trunk/README-build.html" title="View Contents">README-build.html</a></h3>
+
+  <!-- Contents -->
+  
+    <div class="twoColumns">
+      <!-- first column-->
+      <div class="column">
+        <ul class="actions">
+          <li><a href="/projects/applet-launcher/sources/svn/history/trunk/README-build.html">&raquo; File Revision History</a> </li>
+          <li><a href="/projects/applet-launcher/sources/svn/content/trunk/README-build.html?raw=true">&raquo; Get Raw File</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <!-- second column-->
+      <div class="column" align="right">
+        <form method="get" action="/projects/applet-launcher/sources/svn/diff/trunk/README-build.html">
+          <input value="Get diffs" type="submit"> between
+          <input name="rev1" value="" type="text" size="6"> and
+          <input name="rev2" value="" type="text" size="6">
+        </form>        
+      </div>
+      <div class="clear"></div>
+    </div>
+  
+  
+    <!-- File info -->
+    <div style="margin:-6px 0 10px 5px;">Size: 3089 bytes, 1 line</div>
+    <!-- contents -->
+
+<pre name="code" class="xml">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;!--
+/*
+* $RCSfile$
+*
+* Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* - Redistribution of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* - Redistribution in binary form must reproduce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+* Neither the name of Sun Microsystems, Inc. or the names of
+* contributors may be used to endorse or promote products derived
+* from this software without specific prior written permission.
+*
+* This software is provided &quot;AS IS,&quot; without a warranty of any
+* kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+* WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+* EXCLUDED. SUN MICROSYSTEMS, INC. (&quot;SUN&quot;) AND ITS LICENSORS SHALL
+* NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+* USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+* DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+* ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+* CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+* REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+* INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGES.
+*
+* You acknowledge that this software is not designed, licensed or
+* intended for use in the design, construction, operation or
+* maintenance of any nuclear facility.
+*
+* $Revision$
+* $Date$
+* $State$
+*/
+--&gt;
+
+
+  
+  &lt;meta content=&quot;text/html; charset=ISO-8859-1&quot; http-equiv=&quot;content-type&quot;&gt;
+
+  
+  &lt;title&gt;README-build: build instructions for the j3d-examples project&lt;/title&gt;
+&lt;/head&gt;
+
+
+&lt;body&gt;
+
+&lt;h3&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;&lt;/span&gt;Building the Applet-Launcher Project&lt;br&gt;
+
+&lt;/h3&gt;
+
+&lt;p&gt;To build the
+applet-launcher jar file, you must first checkout the applet-launcher
+CVS repository on java.net. For example, run the cvs checkout command
+as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+
+  &lt;li&gt;cd &amp;lt;cvs-root-dir&amp;gt;&lt;/li&gt;
+
+  &lt;li&gt;cvs checkout applet-launcher&lt;/li&gt;
+
+&lt;/ul&gt;
+
+&lt;h3&gt;System Requirements&lt;br&gt;
+
+&lt;/h3&gt;
+
+&lt;p&gt;The following software must be installed:&lt;/p&gt;
+
+&lt;ul&gt;
+
+  &lt;li&gt;JDK 1.4.2 or later&lt;/li&gt;
+
+  &lt;li&gt;Apache Ant 1.6.5 or later&lt;/li&gt;
+
+&lt;/ul&gt;
+
+&lt;h3&gt;Building applet-launcher&lt;br&gt;
+
+&lt;/h3&gt;
+
+
+&lt;p&gt;Before you start building, please check that your PATH includes the following directories:&lt;br&gt;
+
+&lt;/p&gt;
+
+&lt;ul&gt;
+
+  &lt;li&gt;&amp;lt;ant-root-dir&amp;gt;/bin&lt;/li&gt;
+
+  &lt;li&gt;&amp;lt;jdk-root_dir&amp;gt;/bin&lt;br&gt;
+
+  &lt;/li&gt;
+
+&lt;/ul&gt;
+
+&lt;p&gt;To build the applet-launcher jar file:&lt;br&gt;
+
+&lt;/p&gt;
+
+&lt;ul&gt;
+
+  &lt;li&gt;cd &amp;lt;cvs-root-dir&amp;gt;/applet-launcher&lt;/li&gt;
+
+  &lt;li&gt;ant&lt;br&gt;
+
+  &lt;/li&gt;
+
+&lt;/ul&gt;
+
+&lt;p&gt;This will build the applet-launcher.jar, placed in the dist directory.&lt;/p&gt;
+
+&lt;p&gt;&lt;br&gt;
+
+
+&lt;/p&gt;
+
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+
+  
+</div>
+
+                  <!--END CONTENT AREA-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="sidebar-first" class="sidebar">
+          
+  <div class="vAccordion">      <div id="block-menu-menu-kenai-project-features" class="block">
+      <div class="block-inner">
+        <h2>Project Features</h2>
+        <div class="content" style="text-align: left; margin: 5px;">
+          <ul class="menu">
+                          <!-- % next unless features.first.provisioned? -% -->
+              <li>
+                
+                  <a href="/projects/applet-launcher/lists" style="padding: 0; background-image: none; font-size: 1.03em">Mailing Lists</a>
+                
+              </li>
+              
+                          <!-- % next unless features.first.provisioned? -% -->
+              <li>
+                
+                  <span style="padding: 0; background-image: none; font-size: 1.03em">
+                    Issue Tracking                  </span>
+                
+              </li>
+              <li><a href="http://java.net/jira/browse/APPLET_LAUNCHER" target="_blank">&raquo; JIRA</a></li>
+                          <!-- % next unless features.first.provisioned? -% -->
+              <li>
+                
+                  <span style="padding: 0; background-image: none; font-size: 1.03em">
+                    Source Code Repositories                  </span>
+                
+              </li>
+              <li><a href="/projects/applet-launcher/sources/svn/show">&raquo; Subversion</a></li>
+                      </ul>
+        </div>
+      </div>
+    </div>
+  
+  <div id="block-menu-menu-kenai-project-about" class="block">
+    <div class="block-inner">
+      <h2>About this Project</h2>
+      <div class="content" style="text-align: left; margin: 5px;">
+        <a href="/projects/applet-launcher">Applet-launcher</a>
+                  is a subproject of
+          <a href="/projects/media">Media</a>,
+                was started in January 2011
+        and has <a href="/projects/applet-launcher/members">71 members</a>.
+        The project administrators are
+        <a href="/people/33514-jada"><span class="person -kenai-jada">jada</span></a> and <a href="/people/34766-kcr"><span class="person -kenai-kcr">kcr</span></a>.
+        <br />
+        <ul class="menu">
+                                    <li class="leaf">
+                <a href="/projects/applet-launcher/watch">Join This Project</a>
+              </li>
+                              </ul>
+              </div>
+    </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+    <div id="tertiary-content">
+      <div id="block-menu-menu-footer-menu"  class="block">
+        <div class="block-inner">
+          <div class="content">
+            <ul class="menu">
+              <li class="leaf first">
+                <a href="http://www.java.net/contact" title="">Feedback</a>
+              </li>
+              <li class="leaf">
+                <a href="http://www.java.net/javanet-faq" title="">FAQ</a>
+              </li>
+              <li class="leaf">
+                <a href="http://www.java.net/javanet-web-site-terms-use" title="">Terms of Use</a>
+              </li>
+              <li class="leaf">
+                <a href="http://www.oracle.com/us/legal/privacy/index.html" title="">Privacy</a>
+              </li>
+              <li class="leaf last">
+                <a href="http://www.oracle.com/us/legal/third-party-trademarks/index.html" title="">Trademarks</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <div id="footer-region">
+        <div class="block">
+          <div class="block-inner">
+            <div class="content">
+              <div style="width: 59%; float: left;">
+                <p>
+                  Your use of this web site or any of its content or software indicates
+                  your agreement to be bound by these
+                  <a href="http://www.java.net/javanet-web-site-terms-use">Terms of Participation</a>.
+                </p>
+                <p>
+                  Copyright © 2011, Oracle and/or its affiliates. All rights reserved.
+                  Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+                  Other names may be trademarks of their respective owners.
+                </p>
+                <p>(<a href="/projects/help/pages/ReleaseNotes">revision 20111104.8bf0245</a>)</p>
+              </div>
+              <div style="width: 310px; float: right; text-align: right; margin-right: 10px">
+                <div style="float: right;">
+                  <a href="http://www.oracle.com" title="Oracle"><img alt="" src="http://asset-0.java.net/theme/images/oracle.png?20111104.8bf0245" /></a>
+                  <a href="http://kenai.com" title="Kenai.com"><img alt="" src="http://asset-0.java.net/theme/images/kenai.png?20111104.8bf0245" /></a>
+                  <a href="http://www.cognisync.com" title="Cognisync"><img alt="" src="http://asset-3.java.net/theme/images/cognisync.png?20111104.8bf0245" /></a>
+                  <br />
+                  <div class="powered-by">
+                    Powered by Oracle, Project Kenai and Cognisync
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+    </div>
+        <!-- popups that are anchored to specific elements -->
+    <div class="popupMenuShadow" id="contextMenuShadow"></div>
+    <div class="popupMenuContainer" id="contextMenu">
+      <div class="popupMenu inline">	
+        <div class="upArrow"></div>
+        <div class="header"></div>
+        <div class="contextMenuBody" id="contextMenuBody">&nbsp;</div>
+      </div>
+    </div> 
+    
+    <!-- large content loaded via ajax. Faded but not modal. -->
+    <div class="jqmWindow" id="jqm_large_overlay">
+      <div class="jqmHeader">
+        <div class="jqmTitle">&nbsp;</div>
+        <img alt="Close" class="jqmClose" src="http://asset-1.java.net/images/close.gif?20111104.8bf0245" />
+      </div>
+      <div class="jqmTarget">
+        <img alt="loading" src="http://asset-1.java.net/images/activity.gif?20111104.8bf0245" />
+      </div>
+      <div class="jqmFooter">
+      	<div class="jqmClose functionButtonContainer"><button class="functionButton" title="Done"> Done </button></div>
+      </div>
+    </div>
+    
+    <!-- confirmation dialogs with buttons. Faded and modal. -->
+    <div class="jqmWindow" id="jqm_dialog">
+      <div class="jqmHeader">
+        <div class="jqmTitle">Please Confirm</div>
+        <img alt="Close" class="jqmClose" src="http://asset-1.java.net/images/close.gif?20111104.8bf0245" />
+      </div>
+      <div class="jqmTarget">&nbsp;</div>
+      <div class="jqmFooter">
+      	<div class="jqmClose functionButtonContainer"><button class="functionButton" id="jq_no_button" title="No" onclick="Modal.no()"> No </button></div>
+      	<div class="jqmClose functionButtonContainer"><button class="functionButton" id="jq_yes_button" title="Yes" onclick="Modal.yes();"> Yes </button></div>
+      </div>
+    </div>    
+
+    <div id="jq-ui-autocomplete-parent"></div>
+    
+  </body>
+  <script src="http://asset-2.java.net/javascripts/body_packaged.js?20111104.8bf0245" type="text/javascript"></script>
+  <script src="http://asset-1.java.net/theme/javascript/java_custom.js?20111104.8bf0245" type="text/javascript"></script>
+  
+  <script src="http://asset-3.java.net/javascripts/syntax/scripts/shCore.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shLegacy.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shBrushAS3.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-2.java.net/javascripts/syntax/scripts/shBrushBash.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-0.java.net/javascripts/syntax/scripts/shBrushCpp.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-1.java.net/javascripts/syntax/scripts/shBrushCSharp.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-2.java.net/javascripts/syntax/scripts/shBrushCss.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shBrushDelphi.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-2.java.net/javascripts/syntax/scripts/shBrushDiff.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shBrushGroovy.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-2.java.net/javascripts/syntax/scripts/shBrushJava.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-0.java.net/javascripts/syntax/scripts/shBrushJavaFX.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-1.java.net/javascripts/syntax/scripts/shBrushJScript.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shBrushPerl.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-2.java.net/javascripts/syntax/scripts/shBrushPhp.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-1.java.net/javascripts/syntax/scripts/shBrushPlain.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-0.java.net/javascripts/syntax/scripts/shBrushPowerShell.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shBrushPython.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shBrushRuby.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-1.java.net/javascripts/syntax/scripts/shBrushScala.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-1.java.net/javascripts/syntax/scripts/shBrushSql.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-0.java.net/javascripts/syntax/scripts/shBrushVb.js?20111104.8bf0245" type="text/javascript"></script>
+<script src="http://asset-3.java.net/javascripts/syntax/scripts/shBrushXml.js?20111104.8bf0245" type="text/javascript"></script>
+
+  <script language="JavaScript">
+      $(document).ready(function(){
+          initScmSyntaxHighlight();
+      });
+  </script>
+
+</html>
