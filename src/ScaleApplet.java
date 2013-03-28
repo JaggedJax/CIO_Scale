@@ -306,7 +306,7 @@ public class ScaleApplet extends Applet{
 		File fileInstall = new File(tempDir + Installer);
 		if ((!file1.exists() && try_install) || force_install){
 			try {
-				System.out.println("Drivers Missing. Coping over files.");
+				System.out.println("Drivers Missing. Copying over files.");
 				FileUtils.copyURLToFile(new URL(url+"/drivers/usb/uac-launch.exe"), fileUAC);
 				FileUtils.copyURLToFile(new URL(url+"/drivers/usb/libusb-"+arch+".exe"), fileInstall);
 				//new ProcessBuilder(tempDir + "libusb.exe").start();
