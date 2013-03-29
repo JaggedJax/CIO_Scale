@@ -32,6 +32,7 @@ public class ScaleApplet extends Applet{
 	private String message;
 	private short vid;
 	private short pid;
+	private int config_value;
 	private String stringVID = "";
     private String stringPID = "";
 	private boolean error;
@@ -63,7 +64,7 @@ public class ScaleApplet extends Applet{
 		try_install = true;
 		force_install = false;
 		// data read from the device
-		readData = new byte[7];
+		readData = new byte[6];
 		url = getParameter("url");
 		String temp = getParameter("install");
 		if (temp != null && (temp.equals("install") || temp.equals("force"))){
@@ -82,20 +83,27 @@ public class ScaleApplet extends Applet{
 		// Try really, really hard to connect
 		try {
 			dev = USB.getDevice(vid, pid);
-			try{
-				if (dev.isOpen()){
-					dev.reset();
-					dev = USB.getDevice(vid, pid);
-				}
-			} catch (Exception ee){
-				System.out.println("Couldn't reset device");
-			}
 			
-			dev.open(1, interface_num, -1);
+			dev.open(config_value, interface_num, -1);
+			// Give it some time to open
+			int waitTries=0;
+			while (!dev.isOpen() && waitTries < 10)
+			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {}
+				waitTries++;
+			}
+			System.out.println("Device opened after "+(waitTries*100)+"ms");
+			
 			dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, true);
 			System.out.println("Using interface: "+dev.getInterface());
 			error = false;
 		} catch (USBException e) {
+			System.out.println("Error opening Device: "+e.getMessage());
+			try {
+				dev.close();
+			} catch (USBException e3) {}
 			int alt = dev.getAltinterface();
 			if (alt == -1){
 				alt = 0;
@@ -104,21 +112,25 @@ public class ScaleApplet extends Applet{
 				} catch (InterruptedException e1) {}
 			}
 			try{
-				get_scale();
-				dev = USB.getDevice(vid, pid);
-				dev.open(1, alt, -1);
-				dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, false);
-				System.out.println("Using alternate interface "+alt);
+				//get_scale();
+				//dev = USB.getDevice(vid, pid);
+				dev.setResetOnFirstOpen(false, 5);
+				dev.open(config_value, alt, -1);
+				dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, true);
+				System.out.println("Using alternate interface: "+alt);
 			} catch (USBException e2) {
 				System.out.println("Error weight: "+weight);
 				if (!communicate()){
+					try {
+						dev.close();
+					} catch (USBException e3) {}
 					System.out.println(e2.getMessage());
 					filter_install();
 					try{
 						get_scale();
 						dev = USB.getDevice(vid, pid);
-						dev.open(1, 0, -1);
-						dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, false);
+						dev.open(config_value, interface_num, -1);
+						dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, true);
 						System.out.println("Using interface: "+dev.getInterface());
 					}catch (Exception e1){
 						error = true;
@@ -134,8 +146,8 @@ public class ScaleApplet extends Applet{
 			}
 		}
 		//add(view);
-		
 		communicate();
+		System.out.println("First communication attempted");
 	}
 	
 	public void closeConnection(){
@@ -156,9 +168,10 @@ public class ScaleApplet extends Applet{
 		if (!connectionClosed && connectionAttempts < maxConnectionAttempts){
 			// Attempt reconnect
 			System.out.println("Attempting reconnection to scale. Attempt "+connectionAttempts);
-			dev = null;
+			try {
+				dev.reset();
+			} catch (USBException e3) {}
 			try{
-				dev = USB.getDevice(vid, pid);
 				try{
 					if (dev.isOpen())
 						dev.close();
@@ -166,7 +179,7 @@ public class ScaleApplet extends Applet{
 					System.out.println("Couldn't close device");
 				}
 				
-				dev.open(1, 0, -1);
+				dev.open(config_value, interface_num, -1);
 				dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, false);
 				System.out.println("Using interface: "+dev.getInterface());
 			}catch(USBException e){
@@ -180,7 +193,7 @@ public class ScaleApplet extends Applet{
 				}
 				try{
 					dev = USB.getDevice(vid, pid);
-					dev.open(1, alt, -1);
+					dev.open(config_value, alt, -1);
 					dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, false);
 					System.out.println("Using alternate interface "+alt);
 				} catch (USBException e2) {
@@ -245,6 +258,8 @@ public class ScaleApplet extends Applet{
 	    
 	    if (device != null){
 	    	String temp = device.toString();
+	    	config_value = device.getConfig()[0].getBConfigurationValue();
+	    	System.out.println("Configuration value: "+config_value);
 	    	stringVID = temp.substring(temp.indexOf("0x")+2, temp.lastIndexOf("-"));
 	    	if (stringVID.length() < 4){ // Prepend any missing zeros
 	    		for (int i=0; i<stringVID.length(); i++){
@@ -446,20 +461,22 @@ public class ScaleApplet extends Applet{
 		if (!connectionClosed){
 			for (int i=0; i<4; i++){
 				try{
-					dev.readInterrupt(0x81, readData, readData.length, 2000, false);
+					dev.readInterrupt(0x81, readData, readData.length, 500, false);
 					res = true;
 				} catch (USBException e) {
 					error = true;
-					reconnect = true;
 					weight = -1;
-					if (connectionAttempts < maxConnectionAttempts)
+					if (connectionAttempts < maxConnectionAttempts){
 						message = "Lost connection to scale, reconnect and try again.";
-					else
+						reconnect = true;
+					}
+					else{
 						message = "Could not reconnect to scale. Please restart application.";
+					}
 					view.setText(message);
 					//showMessage(message);
 					res = false;
-					System.out.println(e.getMessage());
+					System.out.println("Error: "+e.getMessage());
 				}
 				// Format data from the device
 				readScale(readData);
