@@ -71,7 +71,9 @@ Example code to include in page:
     <!-- if applet is stored at <https://cioremotedemo.ciotech.com/java/ScaleAppletSigned.jar> -->
     <object type="application/x-java-applet" name="scaleApplet" id="scaleApplet" width="200" height="40">
         <param name="Codebase" value="java/">
-        <param name="archive" value="ScaleAppletSigned.jar">
+        <param name="legacy_lifecycle" value="true">
+        <param name="cache_option" value="Plugin">
+        <param name="cache_archive" value="ScaleAppletSigned.jar">
         <param name="code" value="ScaleApplet.class">
         <param name="url" value="https://cioremotedemo.ciotech.com">
         <param name="install" value="">
@@ -83,6 +85,7 @@ Example code to include in page:
     <! -- We'll put it in this form field -->
     <input type="text" name="weight_oz" id="weight_oz" class="textbox" onchange="PostageUpdate();" size="5" value="0" maxlength="6" />Ounces
 
+The legacy_lifecycle option will keep the applet paused and the JVM running even while not on the page. This makes future runs of the applet instant with no JVM startup or scale re-connection needed. If the applet is truely ended, the destroy() function will close the scale connection automatically.
 
 The file install_scale.php included in this folder is a good sample file that will force a scale install, and show the basics of how to use the applet.
 

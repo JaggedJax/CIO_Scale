@@ -599,6 +599,14 @@ public class ScaleApplet extends Applet{
 	public String getMessage(){
 		return message;
 	}
+	
+	/**
+	 * Close scale connection before applet exits.
+	 */
+	public void destroy(){
+		closeConnection();
+		super.destroy();
+	}
 
 	private void readScale(byte[] data) {
 		if (data[0] == 0x03){ // Is Data Report
