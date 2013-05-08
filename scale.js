@@ -1,54 +1,94 @@
 /**
  * @author williamw
  */
-var timeout;
-var unit;
-var element;
-var after;
+var scale_applet;
+var scale_timeout;
+var scale_unit;
+var scale_element;
+var scale_after;
+var scale_lastWeight;
+
+/**
+window.onunload = function(){
+	if (scale_applet){
+		closeConnection();
+	}
+}
+*/
 
 function scaleSetup(u, e, a){
-	unit = u;
-	element = e;
-	after = a;
+	scale_unit = u;
+	scale_element = e;
+	scale_after = a;
+}
+
+function closeConnection(){
+	//console.log('Attempting to close scale connection');
+	scale_applet.closeConnection();
 }
 
 function waituntilok(u, e, a) {
-	scaleSetup(u, e, a);
-	if (document.getElementById('scaleApplet').isActive())
-		getWeight();
-	else
-		settimeout(waituntilok(), 1000)
+	scale_applet = document.getElementById('scaleApplet');
+	try{
+		if (scale_applet){
+			scaleSetup(u, e, a);
+			if (scale_applet.isActive()){
+				getWeight();
+			}
+			else{
+				setTimeout(waituntilok, 100);
+			}
+		}
+	}catch(e){
+		// Will get here if applet is blocked or doesn't load
+    }
 }
 
-function startWeight(){
+// Polling interval in milliseconds
+function startWeight(interval){
+	if (!interval){
+		interval = 200;
+	}
 	getWeight();
-	timeout = setTimeout(startWeight(), 2000);
+	scale_timeout = setTimeout(function() { startWeight(interval); }, interval);
 }
 
 function stopWeight(){
-	clearTimeout(timeout);
+	clearTimeout(scale_timeout);
 }
 
 function getWeight(){
+	var weight_box = document.getElementById(scale_element);
 	var weight = 0;
 	var u = null;
-	if (unit != null && unit != '')
-		weight = document.getElementById('scaleApplet').getWeight(unit);
+	if (scale_unit != null && scale_unit != ''){
+		weight = scale_applet.getWeight(scale_unit);
+	}
 	else{
-		weight = document.getElementById('scaleApplet').getWeight();
-		u = document.scaleApplet.getUnit();
+		weight = scale_applet.getWeight();
+		u = scale_applet.getUnit();
 	}
 	var message = "";
 	if (weight == -1){
-		message = document.getElementById('scaleApplet').getMessage();
+		message = scale_applet.getMessage();
 		weight = 0;
 	}
-	document.getElementById(element).value = roundNumber(weight, 2);
-	if (unit == null || unit == '')
-		document.getElementById('unit').innerHTML = u;
+	weight = roundNumber(weight, 2);
+	cur_weight = weight_box
+		? roundNumber(weight_box.value, 2)
+		: weight;
+	
+	if (weight_box && weight != scale_lastWeight || weight != cur_weight){
+		scale_lastWeight = weight;
+		weight_box.value = weight;
+		if (scale_unit == null || scale_unit == ''){
+			document.getElementById('unit').innerHTML = u;
+		}
+		if (scale_after != null && scale_after != ''){
+			window[scale_after]();
+		}
+	}
 	document.getElementById('message').innerHTML = message;
-	if (after != null && after != '')
-		window[after]();
 	return true;
 }
 
