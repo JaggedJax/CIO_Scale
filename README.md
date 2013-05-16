@@ -46,6 +46,9 @@ The corresponding .iip files are Clickteam Install Creator Pro files used to cre
 
 ## Create jar from scratch
     jar cvf jarFile.jar inputfile1.class inputfile2.class folder1 folder2
+    
+Make sure to add the following line to the jar's manifest or Java will display an extra warning message
+    Trusted-Library: true
 
 ## Signing
 You must use a signed jar file. An unsigned file will not load.
