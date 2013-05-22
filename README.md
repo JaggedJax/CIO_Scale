@@ -94,3 +94,9 @@ The legacy_lifecycle option will keep the applet paused and the JVM running even
 The file install_scale.php included in this folder is a good sample file that will force a scale install, and show the basics of how to use the applet.
 
 The connection code is really messy right now and I'll try and clean it up when I have time.
+
+## TODO
+
+* Fix 32/64 bit issues
+* Automate driver installation more
+* Look into TCP/IP scale interfaces. Example: http://us.mt.com/dam/mt_ext_files/Editorial/Generic/8/Ethernet_interface_option_for_Excellence_bal_BA_Editorial-Generic_1116310641541_files/excellence-ethernet-ba-e-11780579a.pdf
