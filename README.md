@@ -59,11 +59,11 @@ You must use a signed jar file. An unsigned file will not load.
 
 * Create Store: (If an error about this alias is thrown, make any new -alias here (Doesn't matter what) and also change it in the next command)
 
-    keytool -genkey -alias signJar -keystore compstore -keypass cio4ever -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
+    keytool -genkey -alias signJar -keystore compstore -keypass mypass -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
 
 * Sign Jar:
 
-    jarsigner -keystore compstore -storepass cio4ever -keypass cio4ever -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
+    jarsigner -keystore compstore -storepass SuperSecretPassword -keypass mypass -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
 
 ## Using the Applet
 Example code to include in page:
