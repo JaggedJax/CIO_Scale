@@ -125,7 +125,7 @@ public class ScaleApplet extends Applet{
 						dev.close();
 					} catch (USBException e3) {}
 					System.out.println(e2.getMessage());
-					filter_install();
+					//filter_install();
 					try{
 						get_scale();
 						dev = USB.getDevice(vid, pid);
