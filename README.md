@@ -46,6 +46,10 @@ The corresponding .iip files are Clickteam Install Creator Pro files used to cre
 
 ## Create jar from scratch
     jar cvf jarFile.jar inputfile1.class inputfile2.class folder1 folder2
+    
+Make sure to add the following line to the jar's manifest or Java will display an extra warning message
+
+    Trusted-Library: true
 
 ## Signing
 You must use a signed jar file. An unsigned file will not load.
@@ -55,11 +59,11 @@ You must use a signed jar file. An unsigned file will not load.
 
 * Create Store: (If an error about this alias is thrown, make any new -alias here (Doesn't matter what) and also change it in the next command)
 
-    keytool -genkey -alias signJar -keystore compstore -keypass cio4ever -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
+    keytool -genkey -alias signJar -keystore compstore -keypass mypass -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
 
 * Sign Jar:
 
-    jarsigner -keystore compstore -storepass cio4ever -keypass cio4ever -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
+    jarsigner -keystore compstore -storepass SuperSecretPassword -keypass mypass -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
 
 ## Using the Applet
 Example code to include in page:
@@ -90,3 +94,9 @@ The legacy_lifecycle option will keep the applet paused and the JVM running even
 The file install_scale.php included in this folder is a good sample file that will force a scale install, and show the basics of how to use the applet.
 
 The connection code is really messy right now and I'll try and clean it up when I have time.
+
+## TODO
+
+* Fix 32/64 bit issues
+* Automate driver installation more
+* Look into TCP/IP scale interfaces. Example: http://us.mt.com/dam/mt_ext_files/Editorial/Generic/8/Ethernet_interface_option_for_Excellence_bal_BA_Editorial-Generic_1116310641541_files/excellence-ethernet-ba-e-11780579a.pdf
