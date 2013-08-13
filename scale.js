@@ -24,7 +24,9 @@ function scaleSetup(u, e, a){
 
 function closeConnection(){
 	//console.log('Attempting to close scale connection');
-	scale_applet.closeConnection();
+	if(scale_applet){
+		scale_applet.closeConnection();
+	}
 }
 
 function waituntilok(u, e, a) {
@@ -58,37 +60,39 @@ function stopWeight(){
 }
 
 function getWeight(){
-	var weight_box = document.getElementById(scale_element);
-	var weight = 0;
-	var u = null;
-	if (scale_unit != null && scale_unit != ''){
-		weight = scale_applet.getWeight(scale_unit);
-	}
-	else{
-		weight = scale_applet.getWeight();
-		u = scale_applet.getUnit();
-	}
-	var message = "";
-	if (weight == -1){
-		message = scale_applet.getMessage();
-		weight = 0;
-	}
-	weight = roundNumber(weight, 2);
-	cur_weight = weight_box
-		? roundNumber(weight_box.value, 2)
-		: weight;
-	
-	if (weight_box && weight != scale_lastWeight || weight != cur_weight){
-		scale_lastWeight = weight;
-		weight_box.value = weight;
-		if (scale_unit == null || scale_unit == ''){
-			document.getElementById('unit').innerHTML = u;
+	if(scale_applet){
+		var weight_box = document.getElementById(scale_element);
+		var weight = 0;
+		var u = null;
+		if (scale_unit != null && scale_unit != ''){
+			weight = scale_applet.getWeight(scale_unit);
 		}
-		if (scale_after != null && scale_after != ''){
-			window[scale_after]();
+		else{
+			weight = scale_applet.getWeight();
+			u = scale_applet.getUnit();
 		}
+		var message = "";
+		if (weight == -1){
+			message = scale_applet.getMessage();
+			weight = 0;
+		}
+		weight = roundNumber(weight, 2);
+		cur_weight = weight_box
+			? roundNumber(weight_box.value, 2)
+			: weight;
+		
+		if (weight_box && weight != scale_lastWeight || weight != cur_weight){
+			scale_lastWeight = weight;
+			weight_box.value = weight;
+			if (scale_unit == null || scale_unit == ''){
+				document.getElementById('unit').innerHTML = u;
+			}
+			if (scale_after != null && scale_after != ''){
+				window[scale_after]();
+			}
+		}
+		document.getElementById('message').innerHTML = message;
 	}
-	document.getElementById('message').innerHTML = message;
 	return true;
 }
 
