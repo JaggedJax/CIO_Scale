@@ -6,20 +6,29 @@ var scale_timeout;
 var scale_unit;
 var scale_element;
 var scale_after;
+var scale_freeze_func;
 var scale_lastWeight;
+var scale_auto_freeze;
+var scale_stable_count;
+var scale_disable_timeout;
+var scale_freeze_after_num_dups;
 
-/**
 window.onunload = function(){
 	if (scale_applet){
 		closeConnection();
 	}
 }
-*/
 
-function scaleSetup(u, e, a){
+function scaleSetup(u, e, a, autofreeze, freeze_func){
 	scale_unit = u;
 	scale_element = e;
 	scale_after = a;
+	scale_freeze_after_num_dups = 2;
+	// Auto-freeze options
+	scale_auto_freeze = (autofreeze === true) ? true : false;
+	scale_freeze_func = (freeze_func) ? freeze_func : null;
+	scale_stable_count = 0;
+	scale_disable_timeout = false;
 }
 
 function closeConnection(){
@@ -29,11 +38,20 @@ function closeConnection(){
 	}
 }
 
-function waituntilok(u, e, a) {
+/**
+ * Wait until scale applet loaded then set up scale connection
+ * @param {string} u Unit of measure to return. One of: "mg", "g", "kg", "carat", "tael", "gr", "dwt", "t", "tn", "ozt", "oz", "lb"
+ * @param {string} e ID of input field where weight will be put
+ * @param {string} a Name of function to call whenever a weight is returned
+ * @param {boolean} autofreeze Should we tell your application to stop requesting weights after the scale stabilizes?
+ * @param {string} freeze_func Optional function to call if autofreeze is set to true
+ * @returns {undefined}
+ */
+function waituntilok(u, e, a, autofreeze, freeze_func) {
 	scale_applet = document.getElementById('scaleApplet');
 	try{
 		if (scale_applet){
-			scaleSetup(u, e, a);
+			scaleSetup(u, e, a, autofreeze, freeze_func);
 			if (scale_applet.isActive()){
 				getWeight();
 			}
@@ -52,10 +70,17 @@ function startWeight(interval){
 		interval = 200;
 	}
 	getWeight();
-	scale_timeout = setTimeout(function() { startWeight(interval); }, interval);
+	if(scale_disable_timeout === true){
+		scale_disable_timeout = false;
+		scale_stable_count = 0;
+	}
+	else{
+		scale_timeout = setTimeout(function() { startWeight(interval); }, interval);
+	}
 }
 
 function stopWeight(){
+	scale_disable_timeout = true;
 	clearTimeout(scale_timeout);
 }
 
@@ -77,6 +102,20 @@ function getWeight(){
 			weight = 0;
 		}
 		weight = roundNumber(weight, 2);
+		if(scale_auto_freeze){
+			if(weight > 0 && scale_lastWeight === weight){
+				scale_stable_count++;
+			}
+			else{
+				scale_stable_count = 0;
+			}
+			if(scale_stable_count == scale_freeze_after_num_dups){
+				stopWeight();
+				if(scale_freeze_func){
+					window[scale_freeze_func]();
+				}
+			}
+		}
 		cur_weight = weight_box
 			? roundNumber(weight_box.value, 2)
 			: weight;
