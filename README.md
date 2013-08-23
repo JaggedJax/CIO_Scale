@@ -71,6 +71,8 @@ Example code to include in page:
     <script type="text/javascript" src="javascript/scale.js"></script> <!-- File included in project folder -->
     <!-- Must call waituntilok() in body onload(). Can optionally pass setup parameters of: (desired units, element to update, function to call after update) -->
     <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate');">
+    <!-- Alternate parameters below will automatically pause scale and optionally call your own JS function when this happens. -->
+    <!--  <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', true, 'someOptionalFunc');"> -->
     
     <!-- if applet is stored at <https://cioremotedemo.ciotech.com/java/ScaleAppletSigned.jar> -->
     <object type="application/x-java-applet" name="scaleApplet" id="scaleApplet" width="200" height="40">
