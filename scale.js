@@ -43,23 +43,34 @@ function closeConnection(){
  * @param {string} u Unit of measure to return. One of: "mg", "g", "kg", "carat", "tael", "gr", "dwt", "t", "tn", "ozt", "oz", "lb"
  * @param {string} e ID of input field where weight will be put
  * @param {string} a Name of function to call whenever a weight is returned
+ * @param {int} i Polling interval in milliseconds. Use 0 to disable automatic polling.
  * @param {boolean} autofreeze Should we tell your application to stop requesting weights after the scale stabilizes?
  * @param {string} freeze_func Optional function to call if autofreeze is set to true
  * @returns {undefined}
  */
-function waituntilok(u, e, a, autofreeze, freeze_func) {
+function waituntilok(u, e, a, i, autofreeze, freeze_func) {
+	var ready = false;
 	scale_applet = document.getElementById('scaleApplet');
 	try{
 		if (scale_applet){
 			scaleSetup(u, e, a, autofreeze, freeze_func);
 			if (scale_applet.isActive()){
-				getWeight();
-			}
-			else{
-				setTimeout(waituntilok, 100);
+				ready = true;
+				//console.log('Scale is ready!');
+				if (i && i > 0){
+					startWeight(i);
+				}
+				else{
+					getWeight();
+				}
 			}
 		}
+		if(!ready){
+			//console.log('Scale not ready');
+			setTimeout(waituntilok, 100);
+		}
 	}catch(e){
+		//console.log('Error waiting for scale: '+e.message);
 		// Will get here if applet is blocked or doesn't load
     }
 }

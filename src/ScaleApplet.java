@@ -317,9 +317,10 @@ public class ScaleApplet extends Applet{
 
 		System.out.println("Checking for Drivers");
 		File file1 = new File(sys32 + "LibusbJava.dll");
+		File file2 = new File(sys32 + "Drivers\\libusb0.sys");
 		File fileUAC = new File(tempDir + UAC);
 		File fileInstall = new File(tempDir + Installer);
-		if ((!file1.exists() && try_install) || force_install){
+		if (((!file1.exists() || !file2.exists()) && try_install) || force_install){
 			try {
 				System.out.println("Drivers Missing. Copying over files.");
 				FileUtils.copyURLToFile(new URL(url+"/drivers/usb/uac-launch.exe"), fileUAC);

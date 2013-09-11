@@ -3,7 +3,7 @@
 	<title>Installing Scale</title>
 	<script type="text/javascript" src="scale.js"></script>
 </head>
-<body onload="waituntilok(null, 'weight');" title="Installing Scale">
+<body onload="waituntilok(null, 'weight', null, 500);" title="Installing Scale">
 	<?php
 		function base_url(){
 			$protocol = $_SERVER['HTTPS'] ? "https" : "http";

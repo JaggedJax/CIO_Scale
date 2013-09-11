@@ -69,12 +69,12 @@ You must use a signed jar file. An unsigned file will not load.
 Example code to include in page:
 
     <script type="text/javascript" src="javascript/scale.js"></script> <!-- File included in project folder -->
-    <!-- Must call waituntilok() in body onload(). Can optionally pass setup parameters of: (desired units, element to update, function to call after update) -->
-    <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate');">
-    <!-- Alternate parameters below will automatically pause scale and optionally call your own JS function when this happens. -->
-    <!--  <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', true, 'someOptionalFunc');"> -->
+    <!-- Must call waituntilok() in body onload(). Can optionally pass setup parameters of: (desired units, element ID to update, function to call after update, Polling interval in milliseconds) -->
+    <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', 200);">
+    <!-- Alternate parameters below will automatically pause scale when it's stable and optionally call your own JS function when this happens. -->
+    <!--  <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', 200, true, 'someOptionalFunc');"> -->
     
-    <!-- if applet is stored at <https://cioremotedemo.ciotech.com/java/ScaleAppletSigned.jar> -->
+    <!-- Example if applet was stored at <https://cioremotedemo.ciotech.com/java/ScaleAppletSigned.jar> -->
     <object type="application/x-java-applet" name="scaleApplet" id="scaleApplet" width="200" height="40">
         <param name="Codebase" value="java/">
         <param name="legacy_lifecycle" value="true">
@@ -85,7 +85,7 @@ Example code to include in page:
         <param name="install" value="">
     </object>
     
-    <!-- Call getWeight() from scale.js to pull weight from scale and put it in desired element ID  -->
+    <!-- Call getWeight() from scale.js to manually pull weight from scale and put it in desired element ID  -->
     <input type="button" onclick="getWeight(); return false;" value="Get Weight">
     
     <! -- We'll put it in this form field -->
