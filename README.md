@@ -1,12 +1,13 @@
-CIO Remote Java applet USB scale integration
+Java applet for USB scale integration with a web application
 ============================
 
-Java applet written by: William S. Wynn (CIO Technologies)
+CIO Scale Java applet written by: William S. Wynn (CIO Technologies)
 
-License to come. Contact before commercial use.
+CIO Scale is licensed under the MIT X11 License. Libraries included herein are unmodified, listed below, and are covered by their respective license.
 
 * libusb-win32 wrapper (Java): http://libusbjava.sourceforge.net
 * libusb-win32: http://sourceforge.net/apps/trac/libusb-win32
+* Apache Commons-IO: https://commons.apache.org/proper/commons-io/
 
 ScaleAppletSigned.jar takes two parameters at runtime:
 
@@ -102,3 +103,29 @@ The connection code is really messy right now and I'll try and clean it up when 
 * Fix 32/64 bit issues
 * Automate driver installation more
 * Look into TCP/IP scale interfaces. Example: http://us.mt.com/dam/mt_ext_files/Editorial/Generic/8/Ethernet_interface_option_for_Excellence_bal_BA_Editorial-Generic_1116310641541_files/excellence-ethernet-ba-e-11780579a.pdf
+
+## License
+
+The following license covers files in the src/ directory as well as scale.js. All other software is linked under its existing license and is unmodified.
+
+The MIT License (MIT)
+
+Copyright (c) 2013 CIO Technologies Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
