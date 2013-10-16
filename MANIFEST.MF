@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Trusted-Library: true
+Ant-Version: Apache Ant 1.7.1
+Created-By: 1.5.0_12-b04 (Sun Microsystems Inc.)
+Built-By: CIO Technologies Inc.
+Application-Name: CIO Scale Applet
+Permissions: all-permissions
+Main-Class: ch.ntb.usb.usbView.UsbView
+Caller-Allowable-Codebase: *
+Application-Library-Allowable-Codebase: *
+Codebase: *
+Name: common
+Implementation-Title: ch.ntb.usb
+Implementation-Version: 0.5.9 May 17 2009
+Implementation-Vendor: inf.ntb.ch
+
