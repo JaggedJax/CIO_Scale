@@ -1,6 +1,7 @@
 <html>
 <head>
 	<title>Installing Scale</title>
+	<script type="text/javascript" src="http://www.java.com/js/deployJava.js"></script>
 	<script type="text/javascript" src="scale.js"></script>
 </head>
 <body onload="waituntilok(null, 'weight', null, 500);" title="Installing Scale">
@@ -10,14 +11,18 @@
 			return $protocol . "://" . $_SERVER['HTTP_HOST'];
 		}
 	?>
-
-<object type="application/x-java-applet" name="scaleApplet" id="scaleApplet" width="200" height="40">
-	<param name="Codebase" value="java/">
-	<param name="archive" value="ScaleAppletSigned.jar">
-	<param name="code" value="ScaleApplet.class">
-	<param name="url" value="<?php echo base_url(); ?>">
-	<param name="install" value="install">
-</object>
+<script>
+	var attributes = {
+		name:'scaleApplet', id:'scaleApplet',
+		codebase:'java/', code:'ScaleApplet',
+		cache_archive:'ScaleAppletSigned.jar',
+		cache_option:'Plugin',
+		initial_focus:false,
+		width:200, height:40 };
+	var parameters = { url:'<?php echo base_url(); ?>', install:'install' } ;
+	var version = '1.7' ;
+	deployJava.runApplet(attributes, parameters, version);
+</script>
 <br>
 <form id="testform" name="testform">
 	<input type="text" name="weight" id="weight" size="6" value="0" /><span id="unit"></span>

@@ -442,14 +442,11 @@ public class ScaleApplet extends Applet{
 	 * @return Architecture type
 	 */
 	private String getArchitecture() {
-		//String arch = System.getenv("PROCESSOR_ARCHITEW6432");
-		//String arch = System.getProperty("sun.arch.data.model");
-		String arch = System.getProperty("os.arch");
-		//System.out.println("TEST ARCH: "+arch);
-		if(arch != null && !arch.isEmpty()) {
-			return arch;
-		}
-		return System.getenv("PROCESSOR_ARCHITECTURE");
+		String arch = System.getenv("PROCESSOR_ARCHITECTURE");
+		String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
+		String realArch = (arch.endsWith("64") || wow64Arch != null && wow64Arch.endsWith("64"))
+		                      ? "64" : "32";
+		return realArch;
 	}
 
 	

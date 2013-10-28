@@ -70,21 +70,25 @@ You must use a signed jar file. An unsigned file will not load.
 Example code to include in page:
 
     <script type="text/javascript" src="javascript/scale.js"></script> <!-- File included in project folder -->
+	<script type="text/javascript" src="http://www.java.com/js/deployJava.js"></script>
     <!-- Must call waituntilok() in body onload(). Can optionally pass setup parameters of: (desired units, element ID to update, function to call after update, Polling interval in milliseconds) -->
     <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', 200);">
     <!-- Alternate parameters below will automatically pause scale when it's stable and optionally call your own JS function when this happens. -->
     <!--  <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', 200, true, 'someOptionalFunc');"> -->
     
     <!-- Example if applet was stored at <https://cioremotedemo.ciotech.com/java/ScaleAppletSigned.jar> -->
-    <object type="application/x-java-applet" name="scaleApplet" id="scaleApplet" width="200" height="40">
-        <param name="Codebase" value="java/">
-        <param name="legacy_lifecycle" value="true">
-        <param name="cache_option" value="Plugin">
-        <param name="cache_archive" value="ScaleAppletSigned.jar">
-        <param name="code" value="ScaleApplet.class">
-        <param name="url" value="https://cioremotedemo.ciotech.com">
-        <param name="install" value="">
-    </object>
+	<script>
+		var attributes = {
+			name:'scaleApplet', id:'scaleApplet',
+			codebase:'java/', code:'ScaleApplet',
+			cache_archive:'ScaleAppletSigned.jar',
+			cache_option:'Plugin',
+			initial_focus:false,
+			width:200, height:40 };
+		var parameters = { url:'https://cioremotedemo.ciotech.com' } ;
+		var version = '1.7' ;
+		deployJava.runApplet(attributes, parameters, version);
+	</script>
     
     <!-- Call getWeight() from scale.js to manually pull weight from scale and put it in desired element ID  -->
     <input type="button" onclick="getWeight(); return false;" value="Get Weight">
