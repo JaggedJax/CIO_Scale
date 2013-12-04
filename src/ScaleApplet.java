@@ -224,37 +224,20 @@ public class ScaleApplet extends Applet{
 	private boolean get_scale(){
 		try{
 			LibusbJava.usb_init();
-		}catch (UnsatisfiedLinkError e){
-			System.out.println("Path: "+System.getProperty("java.library.path"));
-			System.out.println("Library error: "+e.getMessage());
-			int pos_32 = e.getMessage().indexOf("32-bit");
-			int pos_64 = e.getMessage().indexOf("64-bit");
-			// If error message is what we expect
-			if (pos_32 > -1 && pos_64 > -1){
-				// "Can't load 32-bit .dll on 64-bit platform" error message 
-				if (pos_32 < pos_64)
-					setup("64");
-				else
-					setup("32");
-			}
-			// Otherwise try the other library
-			else{
-				if (arch.equals("32"))
-					setup("64");
-				else
-					setup("32");
-			}
-			try{
-				LibusbJava.usb_init();
-			}catch (Exception e2){
-				showMessage("Can't install scale drivers on this architecture.\n\nReason: "+e2.getMessage(), "Error connecting to scale!");
-				System.exit(0);
-			}
+		}catch (UnsatisfiedLinkError|NoClassDefFoundError e){
+			showMessage("Can't access scale drivers on this architecture.\n\nReason: "+e.getMessage(),
+					"Error connecting to scale!");
+			System.exit(0);
 		}
-	    LibusbJava.usb_find_busses();
-	    LibusbJava.usb_find_devices();
-	    Usb_Bus bus = LibusbJava.usb_get_busses();
-	    Usb_Device device = bus.getDevices();
+		Usb_Bus bus = null;
+		Usb_Device device = null;
+		try{
+		    LibusbJava.usb_find_busses();
+		    LibusbJava.usb_find_devices();
+		    bus = LibusbJava.usb_get_busses();
+		    device = bus.getDevices();
+		}catch (UnsatisfiedLinkError|NoClassDefFoundError e2){
+		}
 	    
 	    if (device != null){
 	    	String temp = device.toString();
@@ -286,12 +269,11 @@ public class ScaleApplet extends Applet{
 	 * Setup drivers for Scale applet
 	 */
 	private void setup(String forceArch){
-		String sys32 = System.getenv("WINDIR") + "\\system32\\";
 		if (forceArch != null){
 			arch = forceArch;
 			System.out.print("Forced ");
 		}
-		else if (arch.equals("") && System.getenv("WINDIR") != null){
+		else if (System.getenv("WINDIR") != null){
 			arch = getArchitecture();
 			if(arch.contains((CharSequence)"64")){
 				arch = "64";
@@ -301,7 +283,7 @@ public class ScaleApplet extends Applet{
 			}
 			System.out.print("Detected ");
 		}
-		if(System.getenv("WINDIR") == null){
+		else{
 			showMessage("Looks like you're on Linux or Mac.\nThe CIO Remote Scale "
 					+"application only supports Windows at this time.", "Error");
 			System.exit(0);
@@ -316,13 +298,23 @@ public class ScaleApplet extends Applet{
 		String Installer = "CIORemote_ins-"+generateString(new Random(System.currentTimeMillis()), 4)+".exe";
 
 		System.out.println("Checking for Drivers");
-		File file1 = new File(sys32 + "LibusbJava.dll");
-		File file2 = new File(sys32 + "Drivers\\libusb0.sys");
+		boolean libusbjavaFound = true;
+		try{
+			LibusbJava.usb_init();
+		}catch (UnsatisfiedLinkError|NoClassDefFoundError e){
+			libusbjavaFound = false;
+			System.out.println("Error loading LibusbJava: "+e.getLocalizedMessage());
+		}
 		File fileUAC = new File(tempDir + UAC);
 		File fileInstall = new File(tempDir + Installer);
-		if (((!file1.exists() || !file2.exists()) && try_install) || force_install){
+		if ((!libusbjavaFound && try_install) || force_install){
 			try {
-				System.out.println("Drivers Missing. Copying over files.");
+				if(force_install){
+					System.out.println("Driver install forced. Copying over files.");
+				}
+				else{
+					System.out.println("Drivers Missing. Copying over files.");
+				}
 				FileUtils.copyURLToFile(new URL(url+"/drivers/usb/uac-launch.exe"), fileUAC);
 				FileUtils.copyURLToFile(new URL(url+"/drivers/usb/libusb-"+arch+".exe"), fileInstall);
 				//new ProcessBuilder(tempDir + "libusb.exe").start();
@@ -336,18 +328,18 @@ public class ScaleApplet extends Applet{
 					workingDir = new File(".");
 				}
 			*/
-				if (forceArch != null){
+				if (forceArch == null){
 					Object[] options = {"Install Scale", "Cancel"};
-					String message = "CIO Remote will now install the required scale drivers.\nAdministrator privileges are required!\n\n"
-							+"If you are running XP, you must un-select the box that says:\n"
+					String message = "CIO Remote will now install the required scale drivers. Make sure your scale is plugged in.\nAdministrator privileges are required!\n\n"
+							+"If you are running Windows XP, you must un-select the box that says:\n"
 							+"\"Protect my computer and data from unauthorized program activity\"\n\n"
 							+"The installer will launch when you close this window.\n\n"
-							+"When asked to save a file, save it in your home directory and then select \"Install Now\"";
+							+"In the next window, select your scale from the dropdown list and press \"Reinstall Driver\". Then close the window to continue.";
 					int choice = JOptionPane.showOptionDialog(this, message, "CIO Remote - Installing Drivers", JOptionPane.YES_NO_OPTION,
 							JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 					if (choice != 0){
 						System.out.println("Install canceled");
-						return;
+						System.exit(0);
 					}
 				}
 				
@@ -378,7 +370,7 @@ public class ScaleApplet extends Applet{
 				showMessage("Couldn't install drivers.\n\n"+e.getMessage(), "Error");
 			}
 		}
-		else if(!file1.exists() && !try_install){
+		else if(!libusbjavaFound && !try_install){
 			System.out.println("Drivers missing, but install was skipped by request.");
 		}
 		else{
@@ -444,7 +436,7 @@ public class ScaleApplet extends Applet{
 	private String getArchitecture() {
 		String arch = System.getenv("PROCESSOR_ARCHITECTURE");
 		String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
-		String realArch = (arch.endsWith("64") || wow64Arch != null && wow64Arch.endsWith("64"))
+		String realArch = (arch.endsWith("64") || (wow64Arch != null && wow64Arch.endsWith("64")))
 		                      ? "64" : "32";
 		return realArch;
 	}

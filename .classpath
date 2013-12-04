@@ -5,12 +5,9 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Scale/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="KeepAlive"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="ch.ntb.usb-0.5.9.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Windows/System32"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="commons-io-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/ch.ntb.usb-0.5.9.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

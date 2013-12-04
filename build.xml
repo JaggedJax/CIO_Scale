@@ -1,0 +1,61 @@
+<project>
+    <presetdef name="javac">
+        <javac includeantruntime="false" />
+    </presetdef>
+    
+    <property name="src.dir"     value="src"/>
+
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"     value="${build.dir}/jar"/>
+    <property name="lib.dir"     value="lib"/>
+    <property name="main-class"  value="ch.ntb.usb.usbView.UsbView"/> 
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>   
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="src" destdir="${classes.dir}" classpathref="classpath"/>
+        <mkdir dir="${classes.dir}/KeepAlive"/>
+        <javac srcdir="src/KeepAlive" destdir="${classes.dir}/KeepAlive"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/ScaleApplet.jar" basedir="${classes.dir}">
+            <zipgroupfileset dir="lib" includes="*.jar"/>
+            <manifest>
+                <attribute name="Main-Class" value=""/>
+                <attribute name="Permissions" value="all-permissions"/>
+                <attribute name="Trusted-library" value="true"/>
+                <attribute name="Caller-Allowable-Codebase" value="*"/>
+                <attribute name="Application-Name" value="ScaleApplet"/>
+                <attribute name="Codebase" value="*"/>
+            </manifest>
+        </jar>
+        <jar destfile="${jar.dir}/KeepAlive.jar" basedir="${classes.dir}/KeepAlive">
+            <manifest>
+                <attribute name="Main-Class" value=""/>
+                <attribute name="Permissions" value="all-permissions"/>
+                <attribute name="Trusted-library" value="true"/>
+                <attribute name="Caller-Allowable-Codebase" value="*"/>
+                <attribute name="Application-Name" value="KeepAlive"/>
+                <attribute name="Codebase" value="*"/>
+            </manifest>
+        </jar>
+        <!--<signjar alias="" keystore="" storepass="" storetype="pkcs12" lazy="true">
+          <path>
+            <fileset dir="${jar.dir}" includes="**/*.jar" />
+          </path>
+        </signjar>-->
+    </target>
+    <target name="clean-build" depends="clean,jar"/>
+    <target name="main" depends="clean,compile,jar"/>
+
+</project>
