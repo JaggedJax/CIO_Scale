@@ -6,8 +6,9 @@ CIO Scale Java applet written by: William S. Wynn (CIO Technologies)
 CIO Scale is licensed under the MIT X11 License. Libraries included herein are unmodified, listed below, and are covered by their respective license.
 
 * libusb-win32 wrapper (Java): http://libusbjava.sourceforge.net
-* libusb-win32: http://sourceforge.net/apps/trac/libusb-win32
+* Zadig: http://zadig.akeo.ie/
 * Apache Commons-IO: https://commons.apache.org/proper/commons-io/
+* libusb-win32 (No longer used - Replaced by Zadig): http://sourceforge.net/apps/trac/libusb-win32
 
 ScaleAppletSigned.jar takes two parameters at runtime:
 
@@ -16,7 +17,7 @@ ScaleAppletSigned.jar takes two parameters at runtime:
 
 The /src folder contains ScaleApplet.java which is the only custom Java code you will need for the integration.
 	
-If you import this base folder (not just src) into Eclipse as an existing project, it _Should_ be able to build ScaleApplet.java. Otherwise you might have to link the libraries properly yourself.
+If you import this base folder (not just src) into Eclipse as an existing project, it _Should_ be able to build ScaleApplet.java. Otherwise you might have to link the libraries properly yourself. Better instructions to come soon.
 
 I normally build ScaleApplet.java and then open ScaleAppletUnsigned.jar as a zip file and just copy in the new ScaleApplet.class file instead of creating the entire jar.
 
@@ -27,13 +28,16 @@ Those two files are the custom driver installers.
 folder /drivers/usb contents:
 
 * libusb-32.exe & libusb-64.exe installers
+* zadig_xp_vXXX.exe
+	- GUI installer for scale special drivers.
+	- This program is included in and launched by the installers listed above.
+	- XP version is included for wider support.
 * inf-wizard.exe
-	- GUI installer for scale special drivers
-	- This program is included in and launched by the installers listed above
+	- No longer used. Replaced by Zadig.
 * install-filter-win32.exe & install-filter-win64.exe
 	- These are the filter drivers that can be used to talk to a usb scale w/o installing the special drivers. I haven't played with this much.
 	- Instructions for use are at: http://sourceforge.net/apps/trac/libusb-win32/wiki#Installation
-	- The downside of this is you could have to install every time the computer is restarted. The upside is it can be automated more, I think.
+	- The downside of this is you might have to install every time the computer is restarted. The upside is it can be automated more and doesn't hog the default scale drivers, I think.
 * uac-launch.exe
 	- A program I modified to launch any program and ask for admin privalages.
 	- Parameters passed are the parameters for the file to launch.
@@ -42,8 +46,8 @@ folder /drivers/usb contents:
 
 >uac-launch.exe \<File to launch\> \<Parameters\>
 
-Folders /lib32 and /lib64 contain the raw files that libusb-32.exe and libusb-64.exe actually contain.
-The corresponding .iip files are Clickteam Install Creator Pro files used to create/modify the exe installers. They use the /lib32 and /lib64 folders to build the installers.
+Folder /libusb contain the raw files that libusb-32.exe and libusb-64.exe actually contain.
+The .iip files are Clickteam Install Creator Pro files used to create/modify the exe installers. They use the /libusb folder to build the installers.
 
 ## Create jar from scratch
     jar cvf jarFile.jar inputfile1.class inputfile2.class folder1 folder2
@@ -51,20 +55,6 @@ The corresponding .iip files are Clickteam Install Creator Pro files used to cre
 Make sure to add the following line to the jar's manifest or Java will display an extra warning message
 
     Trusted-Library: true
-
-## Signing
-You must use a signed jar file. An unsigned file will not load.
-
-* In command prompt go to folder containing unsigned jar
-* Use your own jdk directory in the commands below of course.
-
-* Create Store: (If an error about this alias is thrown, make any new -alias here (Doesn't matter what) and also change it in the next command)
-
-    keytool -genkey -alias signJar -keystore compstore -keypass mypass -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
-
-* Sign Jar:
-
-    jarsigner -keystore compstore -storepass SuperSecretPassword -keypass mypass -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
 
 ## Using the Applet
 Example code to include in page:
@@ -93,7 +83,7 @@ Example code to include in page:
     <!-- Call getWeight() from scale.js to manually pull weight from scale and put it in desired element ID  -->
     <input type="button" onclick="getWeight(); return false;" value="Get Weight">
     
-    <! -- We'll put it in this form field -->
+    <! -- We'll put it in this input form field -->
     <input type="text" name="weight_oz" id="weight_oz" class="textbox" onchange="PostageUpdate();" size="5" value="0" maxlength="6" />Ounces
 
 The legacy_lifecycle option will keep the applet paused and the JVM running even while not on the page. This makes future runs of the applet instant with no JVM startup or scale re-connection needed. If the applet is truely ended, the destroy() function will close the scale connection automatically.
@@ -102,10 +92,24 @@ The file install_scale.php included in this folder is a good sample file that wi
 
 The connection code is really messy right now and I'll try and clean it up when I have time.
 
+## Signing
+You must use a signed jar file. An unsigned file will not load.
+Better signing instructions will come soon.
+
+* In command prompt go to folder containing unsigned jar
+* Use your own jdk directory in the commands below of course.
+
+* Create Store: (If an error about this alias is thrown, make any new -alias here (Doesn't matter what) and also change it in the next command)
+
+    keytool -genkey -alias signJar -keystore compstore -keypass mypass -dname "CN=William Wynn, OU=CIO Remote, O=CIO Technologies Inc., L=Santa Barbara, ST=CA, C=US" -storepass SuperSecretPassword"
+
+* Sign Jar:
+
+    jarsigner -keystore compstore -storepass SuperSecretPassword -keypass mypass -signedjar ScaleAppletSigned.jar ScaleAppletUnsigned.jar signJar
+
 ## TODO
 
-* Fix 32/64 bit issues
-* Automate driver installation more
+* Only show users the possible scales during install instead of all USB devices.
 * Look into TCP/IP scale interfaces. Example: http://us.mt.com/dam/mt_ext_files/Editorial/Generic/8/Ethernet_interface_option_for_Excellence_bal_BA_Editorial-Generic_1116310641541_files/excellence-ethernet-ba-e-11780579a.pdf
 
 ## License
