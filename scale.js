@@ -4,6 +4,7 @@
 var scale_applet;
 var scale_timeout;
 var scale_unit;
+var scale_interval;
 var scale_element;
 var scale_after;
 var scale_freeze_func;
@@ -19,25 +20,6 @@ window.onunload = function(){
 	}
 }
 
-function scaleSetup(u, e, a, autofreeze, freeze_func){
-	scale_unit = u;
-	scale_element = e;
-	scale_after = a;
-	scale_freeze_after_num_dups = 2;
-	// Auto-freeze options
-	scale_auto_freeze = (autofreeze === true) ? true : false;
-	scale_freeze_func = (freeze_func) ? freeze_func : null;
-	scale_stable_count = 0;
-	scale_disable_timeout = false;
-}
-
-function closeConnection(){
-	//console.log('Attempting to close scale connection');
-	if(scale_applet){
-		scale_applet.closeConnection();
-	}
-}
-
 /**
  * Wait until scale applet loaded then set up scale connection
  * @param {string} u Unit of measure to return. One of: "mg", "g", "kg", "carat", "tael", "gr", "dwt", "t", "tn", "ozt", "oz", "lb"
@@ -48,37 +30,47 @@ function closeConnection(){
  * @param {string} freeze_func Optional function to call if autofreeze is set to true
  * @returns {undefined}
  */
-function waituntilok(u, e, a, i, autofreeze, freeze_func) {
-	var ready = false;
+function scaleSetup(u, e, a, i, autofreeze, freeze_func){
 	scale_applet = document.getElementById('scaleApplet');
-	try{
-		if (scale_applet){
-			scaleSetup(u, e, a, autofreeze, freeze_func);
-			if (scale_applet.isActive()){
-				ready = true;
-				//console.log('Scale is ready!');
-				if (i && i > 0){
-					startWeight(i);
-				}
-				else{
-					getWeight();
-				}
-			}
-		}
-		if(!ready){
-			//console.log('Scale not ready');
-			setTimeout(waituntilok, 100);
-		}
-	}catch(e){
-		//console.log('Error waiting for scale: '+e.message);
-		// Will get here if applet is blocked or doesn't load
-    }
+	scale_unit = u;
+	scale_element = e;
+	scale_after = a;
+	scale_interval = i;
+	scale_freeze_after_num_dups = 2;
+	// Auto-freeze options
+	scale_auto_freeze = (autofreeze === true) ? true : false;
+	scale_freeze_func = (freeze_func) ? freeze_func : null;
+	scale_stable_count = 0;
+	scale_disable_timeout = false;
+}
+
+/**
+ * This function is called automatically when the scale is ready.
+ */
+function cioScaleReady(){
+	//console.log('Scale is ready!');
+	if (scale_interval && scale_interval > 0){
+		startWeight(scale_interval);
+	}
+	else{
+		getWeight();
+	}
+}
+
+function closeConnection(){
+	//console.log('Attempting to close scale connection');
+	if(scale_applet){
+		scale_applet.closeConnection();
+	}
 }
 
 // Polling interval in milliseconds
 function startWeight(interval){
-	if (!interval){
-		interval = 200;
+	if (interval){
+		scale_interval = interval;
+	}
+	if(!scale_interval){
+		scale_interval = 200;
 	}
 	getWeight();
 	if(scale_disable_timeout === true){
@@ -86,7 +78,7 @@ function startWeight(interval){
 		scale_stable_count = 0;
 	}
 	else{
-		scale_timeout = setTimeout(function() { startWeight(interval); }, interval);
+		scale_timeout = setTimeout(function() { startWeight(scale_interval); }, scale_interval);
 	}
 }
 

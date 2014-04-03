@@ -20,10 +20,14 @@ import ch.ntb.usb.Usb_Device;
 
 import org.apache.commons.io.FileUtils;
 
+import netscape.javascript.*;
+
 public class ScaleApplet extends Applet{
 	private static final long serialVersionUID = 1L;
 //	private Label m_label = new Label("version 11.8.11"); // MM.DD.YY - Date of last update
 	private int interface_num = 0;
+	
+	private JSObject win;
 	
 	private Label view = new Label();
 	private String unit[];
@@ -37,6 +41,7 @@ public class ScaleApplet extends Applet{
     private String stringPID = "";
 	private boolean error;
 	private boolean reconnect;
+	private boolean firstStart = true;
 	private byte[] readData;
 	private Device dev;
 	private String url;
@@ -55,6 +60,11 @@ public class ScaleApplet extends Applet{
 	 * Initialize ScaleApplet and connect to scale
 	 */
 	public void init() {
+		try{
+			win = JSObject.getWindow(this);
+		} catch (Exception e) {
+			System.out.println("JSObject Error: "+e.getMessage());
+		}
 		unit = new String[] {"mg", "g", "kg", "carat", "tael", "gr", "dwt", "t", "tn", "ozt", "oz", "lb"};
 		weight = 0;
 		unitNumber = 11; // 11 for lb
@@ -151,21 +161,23 @@ public class ScaleApplet extends Applet{
 	}
 	
 	public void closeConnection(){
+		System.out.print("Closing connection to scale: ");
 		try {
 			dev.close();
-			System.out.println("Connection to scale closed");
+			System.out.println("Success");
 			connectionClosed = true;
 		} catch (USBException e) {
-			System.out.println("Couldn't close connection");
+			System.out.println("Failed. It may already be closed.");
 		}
 	}
 	
 	/**
 	 * Attempt to reconnect to same scale after losing connection.
 	 * Tries same VID and PID as before.
+	 * @param incrementCounter Increment the counter? Counter is used to prevent too many auto-reconnect attempts.
 	 */
-	public void reconnect() {
-		if (!connectionClosed && connectionAttempts < maxConnectionAttempts){
+	public void reconnect(boolean incrementCounter) {
+		if (!incrementCounter || (!connectionClosed && connectionAttempts < maxConnectionAttempts)){
 			// Attempt reconnect
 			System.out.println("Attempting reconnection to scale. Attempt "+connectionAttempts);
 			try {
@@ -200,7 +212,9 @@ public class ScaleApplet extends Applet{
 					System.out.println("Error reconnecting to scale: "+e2.getMessage());
 				}
 			}
-			connectionAttempts++;
+			if(incrementCounter){
+				connectionAttempts++;
+			}
 		}
 		else{
 			System.out.println("Max reconnection attempts already made. Could not connect.");
@@ -482,7 +496,7 @@ public class ScaleApplet extends Applet{
 				System.out.println(message);
 			}
 			if (reconnect){
-				reconnect();
+				reconnect(true);
 			}
 		}
 		return res;
@@ -596,6 +610,35 @@ public class ScaleApplet extends Applet{
 	public void destroy(){
 		closeConnection();
 		super.destroy();
+	}
+	
+	public void stop(){
+		System.out.println("Applet lost focus. Disconnecting from scale.");
+		reconnect = true;
+		closeConnection();
+	}
+	
+	/**
+	 * Reconnect when page regains focus.
+	 */
+	public void start(){
+		if(firstStart){
+			firstStart = false;
+			if(win != null){
+				System.out.println("Calling JS: cioScaleReady()");
+				win.call("cioScaleReady", null);
+			}
+			else{
+				System.out.println("Callback failed to: cioScaleReady()");
+			}
+		}
+		else{
+			System.out.println("Applet regained focus. Reconnecting to scale.");
+			if(reconnect){
+				reconnect = false;
+				reconnect(true);
+			}
+		}
 	}
 
 	private void readScale(byte[] data) {
