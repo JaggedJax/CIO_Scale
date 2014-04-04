@@ -3,6 +3,9 @@ Java applet for USB scale integration with a web application
 
 CIO Scale Java applet written by: William S. Wynn (CIO Technologies)
 
+Thanks to the following for their help and input:
+* Joe Carr
+
 CIO Scale is licensed under the MIT X11 License. Libraries included herein are unmodified, listed below, and are covered by their respective license.
 
 * libusb-win32 wrapper (Java): http://libusbjava.sourceforge.net
@@ -46,8 +49,7 @@ folder /drivers/usb contents:
 
 >uac-launch.exe \<File to launch\> \<Parameters\>
 
-Folder /libusb contain the raw files that libusb-32.exe and libusb-64.exe actually contain.
-The .iip files are Clickteam Install Creator Pro files used to create/modify the exe installers. They use the /libusb folder to build the installers.
+Folder /libusb contains the raw files that libusb-32.exe and libusb-64.exe actually contain. The .iip files are Clickteam Install Creator Pro files used to create/modify the exe installers. They use the /libusb folder to build the installers.
 
 ## Create jar from scratch
     jar cvf jarFile.jar inputfile1.class inputfile2.class folder1 folder2
