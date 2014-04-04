@@ -636,7 +636,7 @@ public class ScaleApplet extends Applet{
 			System.out.println("Applet regained focus. Reconnecting to scale.");
 			if(reconnect){
 				reconnect = false;
-				reconnect(true);
+				reconnect(false);
 			}
 		}
 	}
