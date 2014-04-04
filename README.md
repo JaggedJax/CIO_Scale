@@ -16,7 +16,10 @@ CIO Scale is licensed under the MIT X11 License. Libraries included herein are u
 ScaleAppletSigned.jar takes two parameters at runtime:
 
 * url - Base url of page. eg: https://cioremotedemo.ciotech.com
-* install - Ignored unless this param's value is also 'install'. If so, this forces the installer to run even if a valid scale is detected.
+* install - Use one of the following:
+ * install or force - Either of these will trigger the installer, even if a valid scale is detected.
+ * no - This will never launch the installer, even if no scale is detected.
+ * If you leave the value empty or don't pass it at all, the installer will launch only if no scale is detected. This is generally the best method.
 
 The /src folder contains ScaleApplet.java which is the only custom Java code you will need for the integration.
 	
@@ -143,7 +146,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/JaggedJax/cio_scale/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
