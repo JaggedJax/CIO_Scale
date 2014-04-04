@@ -51,7 +51,9 @@ The .iip files are Clickteam Install Creator Pro files used to create/modify the
 
 ## Create jar from scratch
     jar cvf jarFile.jar inputfile1.class inputfile2.class folder1 folder2
-    
+
+Building requires plugin.jar and deploy.jar in the build path. Usually found at: JAVA_HOME/jre/lib
+
 Make sure to add the following line to the jar's manifest or Java will display an extra warning message
 
     Trusted-Library: true
@@ -61,10 +63,10 @@ Example code to include in page:
 
     <script type="text/javascript" src="javascript/scale.js"></script> <!-- File included in project folder -->
 	<script type="text/javascript" src="http://www.java.com/js/deployJava.js"></script>
-    <!-- Must call waituntilok() in body onload(). Can optionally pass setup parameters of: (desired units, element ID to update, function to call after update, Polling interval in milliseconds) -->
-    <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', 200);">
+    <!-- Must call scaleSetup() in body onload(). Can optionally pass setup parameters of: (desired units, element ID to update, function to call after update, Polling interval in milliseconds) -->
+    <body onload="scaleSetup('oz', 'weight_oz', 'PostageUpdate', 200);">
     <!-- Alternate parameters below will automatically pause scale when it's stable and optionally call your own JS function when this happens. -->
-    <!--  <body onload="waituntilok('oz', 'weight_oz', 'PostageUpdate', 200, true, 'someOptionalFunc');"> -->
+    <!--  <body onload="scaleSetup('oz', 'weight_oz', 'PostageUpdate', 200, true, 'someOptionalFunc');"> -->
     
     <!-- Example if applet was stored at <https://cioremotedemo.ciotech.com/java/ScaleAppletSigned.jar> -->
 	<script>
@@ -85,6 +87,8 @@ Example code to include in page:
     
     <! -- We'll put it in this input form field -->
     <input type="text" name="weight_oz" id="weight_oz" class="textbox" onchange="PostageUpdate();" size="5" value="0" maxlength="6" />Ounces
+
+Once the applet has loaded, it will call the JS function cioScaleReady() which is included in scale.js or you may write your own. This may not work if testing from within Eclipse. I have to build it and test in a real browser for the callback to work.
 
 The legacy_lifecycle option will keep the applet paused and the JVM running even while not on the page. This makes future runs of the applet instant with no JVM startup or scale re-connection needed. If the applet is truely ended, the destroy() function will close the scale connection automatically.
 
