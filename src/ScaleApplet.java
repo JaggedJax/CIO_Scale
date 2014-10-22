@@ -16,7 +16,11 @@ import ch.ntb.usb.LibusbJava;
 import ch.ntb.usb.USB;
 import ch.ntb.usb.USBException;
 import ch.ntb.usb.Usb_Bus;
+import ch.ntb.usb.Usb_Config_Descriptor;
 import ch.ntb.usb.Usb_Device;
+import ch.ntb.usb.Usb_Endpoint_Descriptor;
+import ch.ntb.usb.Usb_Interface;
+import ch.ntb.usb.Usb_Interface_Descriptor;
 
 import org.apache.commons.io.FileUtils;
 
@@ -36,13 +40,15 @@ public class ScaleApplet extends Applet{
 	private String message;
 	private short vid;
 	private short pid;
+	private byte endpoint = (byte) 0x81;
+	private int maxPacketSize;
 	private int config_value;
 	private String stringVID = "";
     private String stringPID = "";
 	private boolean error;
 	private boolean reconnect;
 	private boolean firstStart = true;
-	private byte[] readData;
+	private byte[] readData = new byte[6];
 	private Device dev;
 	private String url;
 	private String arch = "";
@@ -73,8 +79,6 @@ public class ScaleApplet extends Applet{
 		reconnect = false;
 		try_install = true;
 		force_install = false;
-		// data read from the device
-		readData = new byte[6];
 		url = getParameter("url");
 		String temp = getParameter("install");
 		if (temp != null && (temp.equals("install") || temp.equals("force"))){
@@ -95,6 +99,7 @@ public class ScaleApplet extends Applet{
 			dev = USB.getDevice(vid, pid);
 			
 			dev.open(config_value, interface_num, -1);
+			getEndpointInfo(dev);
 			// Give it some time to open
 			int waitTries=0;
 			while (!dev.isOpen() && waitTries < 10)
@@ -126,6 +131,7 @@ public class ScaleApplet extends Applet{
 				//dev = USB.getDevice(vid, pid);
 				dev.setResetOnFirstOpen(false, 5);
 				dev.open(config_value, alt, -1);
+				getEndpointInfo(dev);
 				dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, true);
 				System.out.println("Using alternate interface: "+alt);
 			} catch (USBException e2) {
@@ -140,6 +146,7 @@ public class ScaleApplet extends Applet{
 						get_scale();
 						dev = USB.getDevice(vid, pid);
 						dev.open(config_value, interface_num, -1);
+						getEndpointInfo(dev);
 						dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, true);
 						System.out.println("Using interface: "+dev.getInterface());
 					}catch (Exception e1){
@@ -158,6 +165,30 @@ public class ScaleApplet extends Applet{
 		//add(view);
 		communicate();
 		System.out.println("First communication attempted");
+	}
+	
+	private void getEndpointInfo(Device dev){
+		if(dev != null){
+			dev.getInterface();
+			//maxPacketSize = dev.getMaxPacketSize();
+			Usb_Config_Descriptor conf_desc[] = dev.getConfigDescriptors();
+			if(conf_desc.length > 0){
+				Usb_Interface iface[] = conf_desc[0].getInterface();
+				if(iface.length > 0){
+					Usb_Interface_Descriptor idesc[] = iface[0].getAltsetting();
+					if(idesc.length > 0){
+						Usb_Endpoint_Descriptor end_desc[] = idesc[0].getEndpoint();
+						if(end_desc.length > 0){
+							endpoint = end_desc[0].getBEndpointAddress();
+							maxPacketSize = end_desc[0].getWMaxPacketSize();
+							// data read from the device
+							readData = new byte[maxPacketSize];
+							System.out.println("Detected endpoint 0x"+String.format("%02X ", endpoint)+" with maxPacketSize of: "+maxPacketSize);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void closeConnection(){
@@ -192,6 +223,7 @@ public class ScaleApplet extends Applet{
 				}
 				
 				dev.open(config_value, interface_num, -1);
+				getEndpointInfo(dev);
 				dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, false);
 				System.out.println("Using interface: "+dev.getInterface());
 			}catch(USBException e){
@@ -206,6 +238,7 @@ public class ScaleApplet extends Applet{
 				try{
 					dev = USB.getDevice(vid, pid);
 					dev.open(config_value, alt, -1);
+					getEndpointInfo(dev);
 					dev.controlMsg(ch.ntb.usb.USB.REQ_TYPE_DIR_DEVICE_TO_HOST, ch.ntb.usb.USB.REQ_GET_STATUS, 1, 0, readData, readData.length, 2000, false);
 					System.out.println("Using alternate interface "+alt);
 				} catch (USBException e2) {
@@ -287,7 +320,7 @@ public class ScaleApplet extends Applet{
 			arch = forceArch;
 			System.out.print("Forced ");
 		}
-		else if (System.getenv("WINDIR") != null){
+	//	else if (System.getenv("WINDIR") != null){
 			arch = getArchitecture();
 			if(arch.contains((CharSequence)"64")){
 				arch = "64";
@@ -296,12 +329,12 @@ public class ScaleApplet extends Applet{
 				arch = "32";
 			}
 			System.out.print("Detected ");
-		}
-		else{
-			showMessage("Looks like you're on Linux or Mac.\nThe CIO Remote Scale "
-					+"application only supports Windows at this time.", "Error");
-			System.exit(0);
-		}
+	//	}
+	//	else{
+	//		showMessage("Looks like you're on Linux or Mac.\nThe CIO Remote Scale "
+	//				+"application only supports Windows at this time.", "Error");
+	//		System.exit(0);
+	//	}
 		System.out.println(arch+" bit OS");
 		String tempDir = System.getProperty("java.io.tmpdir");
 		if (tempDir.charAt(tempDir.length()-1) != '/' && tempDir.charAt(tempDir.length()-1) != '\\'){
@@ -465,7 +498,7 @@ public class ScaleApplet extends Applet{
 		if (!connectionClosed){
 			for (int i=0; i<4; i++){
 				try{
-					dev.readInterrupt(0x81, readData, readData.length, 500, false);
+					dev.readInterrupt(endpoint, readData, readData.length, 500, false);
 					res = true;
 				} catch (USBException e) {
 					error = true;
@@ -509,7 +542,7 @@ public class ScaleApplet extends Applet{
 		while (true){
 			reconnect = false;
 			try{
-				dev.readInterrupt(0x81, readData, readData.length, 2000, false);
+				dev.readInterrupt(endpoint, readData, readData.length, 2000, false);
 			} catch (USBException e) {
 				error = true;
 				reconnect = true;
