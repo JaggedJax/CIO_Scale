@@ -1,6 +1,8 @@
 Java applet for USB scale integration with a web application
 ============================
 
+NOTE: This repo is no longer maintained since support for Java applets is no longer widely supported. The scale connection code is still good and can be used to roll a Java Web Start desktop app though.
+
 CIO Scale Java applet written by: William S. Wynn (CIO Technologies)
 
 Thanks to the following for their help and input:
